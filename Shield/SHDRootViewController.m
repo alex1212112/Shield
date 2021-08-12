@@ -32,8 +32,12 @@
     [self configNavigationBar];
     [self configData];
     [self configViews];
+}
 
-    
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    [self.displayLink invalidate];
+    _displayLink = nil;
 }
 
 - (void)configNavigationBar {
@@ -149,7 +153,7 @@
     CGFloat time = displayLink.timestamp - self.lastTime;
     if(time >= 1.0) {
         CGFloat hz =  self.count / time;
-        NSString *string = [NSString stringWithFormat:@"%f",hz];
+        NSString *string = [NSString stringWithFormat:@"%.0f",ceil(hz)];
         self.label.text = string;
         self.lastTime = displayLink.timestamp;
         self.count = 0;
